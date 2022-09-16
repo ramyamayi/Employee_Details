@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.EmployeeDetails;
@@ -26,9 +27,14 @@ public EmployeeDetails addEmployee(EmployeeDetails employeeDetails) {
 public void deleteById(Long employeeId) {
 employeeRepository.deleteById(employeeId);	
 }
-public EmployeeDetails updateEmployee(EmployeeDetails employeeDetails, Long employeeId) {
+public  EmployeeDetails updateEmployee(EmployeeDetails employeeDetails, Long employeeId) {
 	
-return employeeRepository.save(employeeDetails);
+	EmployeeDetails employee = employeeRepository.findById(employeeId).orElseThrow();
+	employee.setName(employeeDetails.getName());
+	employee.setDept(employeeDetails.getDept());
+	EmployeeDetails updatedEmployee = employeeRepository.save(employee);
+	
+return updatedEmployee ;
 }
 
 }
